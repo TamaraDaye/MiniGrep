@@ -4,20 +4,23 @@ use std::io::prelude::*;
 
 
 fn main() {
+    //store command line arguments
     let args: Vec<String> = env::args().collect();
-    println!("{:?}", args);
 
-    let query: &str = &args[1];
-    let filename :&str = &args[2];
+    //set string search and file to search
+    let (query, file_name) = parse_args(&args);
 
     println!("Searching for {}", query);
-    println!("in file {}",filename);
+    println!("in file {}\n",file_name);
 
 
-    let mut f = File::open(filename).expect("file not found");
+    //Open file with a mutable variable
+    let mut f = File::open(file_name).expect("file not found");
     
+    //variable to hold file contents
     let mut contents = String::new();
 
+    //read data from file as strings
     f.read_to_string(&mut contents)
         .expect("something went wrong reading file");
 
@@ -25,4 +28,12 @@ fn main() {
 
     println!("{}", contents);
 
+}
+
+
+fn parse_args(args: &[String]) -> (&str, &str) {
+    let query: &str = &args[1];
+    let file_name: &str = &args[2];
+
+    (query, file_name)
 }
