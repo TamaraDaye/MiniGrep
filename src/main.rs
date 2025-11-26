@@ -8,14 +8,14 @@ fn main() {
     let args: Vec<String> = env::args().collect();
 
     //set string search and file to search
-    let (query, file_name) = parse_args(&args);
+    let config  = Config::new(&args);
 
-    println!("Searching for {}", query);
-    println!("in file {}\n",file_name);
+    println!("Searching for {}", config.query);
+    println!("in file {}\n",config.filename);
 
 
     //Open file with a mutable variable
-    let mut f = File::open(file_name).expect("file not found");
+    let mut f = File::open(config.filename).expect("file not found");
     
     //variable to hold file contents
     let mut contents = String::new();
@@ -30,10 +30,20 @@ fn main() {
 
 }
 
-
-fn parse_args(args: &[String]) -> (&str, &str) {
-    let query: &str = &args[1];
-    let file_name: &str = &args[2];
-
-    (query, file_name)
+//struct to hold command line args
+struct Config {
+    query: String, 
+    filename: String,
 }
+
+
+impl Config {
+    //function to create command line args
+    fn new(args: &[String]) -> Config {
+        let query: String = args[1].clone();
+        let filename: String = args[2].clone();
+
+        Config{query, filename}
+    }
+}
+
